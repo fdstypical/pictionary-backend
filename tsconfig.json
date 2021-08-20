@@ -4,6 +4,7 @@
     "esModuleInterop": true,
     "target": "esnext",
     "moduleResolution": "node",
+    "experimentalDecorators": true,
     "sourceMap": true,
     "outDir": "dist"
   },
