@@ -1,13 +1,13 @@
 import express, { Application, Request, Response } from 'express';
-import { server } from '../configs';
+import { config, Routes } from '../configs';
 
 const app: Application = express();
 app.use(express.json());
 
-app.get('/', (req: Request, res: Response) => {
+app.get(Routes.root, (req: Request, res: Response) => {
   res.send('The sedulous hyena ate the antelope!');
 });
 
-app.listen(server.PORT, () => {
-  return console.log(`server is listening on ${server.PORT}`);
+app.listen(config.PORT, () => {
+  return console.log(`server is listening on ${config.PORT}`);
 });
