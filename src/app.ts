@@ -1,5 +1,4 @@
 import http from 'http';
-import WebSocket from 'ws';
 import express, { Application } from 'express';
 
 import { config, Routes } from '../configs';
@@ -8,13 +7,13 @@ import UsersRouter from './routers/UsersRouter';
 import RoomsRouter from './routers/RoomsRouter';
 
 // web socket server
-import init from './ws/init';
+import WebSocketServer from './ws/init';
 
 export class App {
   private static _instance: App;
   private _server: http.Server;
   private _app: Application;
-  private _wss: WebSocket.Server;
+  private _wss: WebSocketServer;
 
   private constructor(
     private readonly _port: string | number = config.PORT,
@@ -46,7 +45,7 @@ export class App {
   }
 
   private initWss(): void {
-    this._wss = init(this._server, this._prefix);
+    this._wss = new WebSocketServer(this._server, this._prefix);
   }
 }
 
