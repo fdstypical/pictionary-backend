@@ -7,10 +7,13 @@ import { config, Routes } from '../configs';
 import UsersRouter from './routers/UsersRouter';
 import RoomsRouter from './routers/RoomsRouter';
 
+// web socket server
+import init from './ws/init';
+
 export class App {
   private static _instance: App;
-  private _app: Application;
   private _server: http.Server;
+  private _app: Application;
   private _wss: WebSocket.Server;
 
   private constructor(
@@ -20,12 +23,9 @@ export class App {
     this._app = express();
     this._server = http.createServer(this._app);
 
-    this._app.use(express.json());
-
-    this._app.use(`${this._prefix}${Routes.users}`, UsersRouter);
-    this._app.use(`${this._prefix}${Routes.rooms}`, RoomsRouter);
-
-    this.registerSocket();
+    this.initMiddlewares();
+    this.initRoutes();
+    this.initWss();
   }
 
   public static get Instance(): App {
@@ -36,16 +36,17 @@ export class App {
     this._server.listen(this._port, () => console.log(`App listen on port: ${this._port}`));
   }
 
-  private registerSocket(): void {
-    this._wss = new WebSocket.Server({ server: this._server, path: `${this._prefix}${Routes.ws}` });
+  private initMiddlewares(): void {
+    this._app.use(express.json());
+  }
 
-    this._wss.on('connection', (ws) => {
-      ws.on('message', (message) => {
-        this._wss.clients.forEach((client) => {
-          if (client !== ws && client.readyState === WebSocket.OPEN) client.send(message);
-        });
-      });
-    });
+  private initRoutes(): void {
+    this._app.use(`${this._prefix}${Routes.users}`, UsersRouter);
+    this._app.use(`${this._prefix}${Routes.rooms}`, RoomsRouter);
+  }
+
+  private initWss(): void {
+    this._wss = init(this._server, this._prefix);
   }
 }
 
