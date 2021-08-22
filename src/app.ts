@@ -13,14 +13,17 @@ export class App {
   private _server: http.Server;
   private _wss: WebSocket.Server;
 
-  private constructor(private readonly _port: string | number = config.PORT) {
+  private constructor(
+    private readonly _port: string | number = config.PORT,
+    private readonly _prefix: string = config.API_PREFIX,
+  ) {
     this._app = express();
     this._server = http.createServer(this._app);
 
     this._app.use(express.json());
 
-    this._app.use(`${config.API_PREFIX}${Routes.users}`, UsersRouter);
-    this._app.use(`${config.API_PREFIX}${Routes.rooms}`, RoomsRouter);
+    this._app.use(`${this._prefix}${Routes.users}`, UsersRouter);
+    this._app.use(`${this._prefix}${Routes.rooms}`, RoomsRouter);
 
     this.registerSocket();
   }
@@ -34,10 +37,14 @@ export class App {
   }
 
   private registerSocket(): void {
-    this._wss = new WebSocket.Server({ server: this._server, path: `${config.API_PREFIX}${Routes.ws}` });
+    this._wss = new WebSocket.Server({ server: this._server, path: `${this._prefix}${Routes.ws}` });
 
     this._wss.on('connection', (ws) => {
-      ws.on('message', (message) => console.log(message));
+      ws.on('message', (message) => {
+        this._wss.clients.forEach((client) => {
+          if (client !== ws && client.readyState === WebSocket.OPEN) client.send(message);
+        });
+      });
     });
   }
 }
