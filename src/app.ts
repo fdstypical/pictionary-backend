@@ -3,6 +3,10 @@ import express, { Application } from 'express';
 
 import { config, Routes } from '../configs';
 
+// database
+import Database from '../db';
+
+// routers
 import UsersRouter from './routers/UsersRouter';
 import RoomsRouter from './routers/RoomsRouter';
 
@@ -16,8 +20,9 @@ export class App {
   private _wss: WebSocketServer;
 
   private constructor(
-    private readonly _port: string | number = config.PORT,
+    private readonly _port: number = config.PORT,
     private readonly _prefix: string = config.API_PREFIX,
+    private readonly _db: Database = Database.Instance,
   ) {
     this._app = express();
     this._server = http.createServer(this._app);
@@ -25,6 +30,7 @@ export class App {
     this.initMiddlewares();
     this.initRoutes();
     this.initWss();
+    this.initDb();
   }
 
   public static get Instance(): App {
@@ -46,6 +52,13 @@ export class App {
 
   private initWss(): void {
     this._wss = new WebSocketServer(this._server, this._prefix);
+  }
+
+  private initDb(): void {
+    this._db
+      .init()
+      .then(() => console.log('Connection has been established successfully.'))
+      .catch((err) => console.error('Unable to connect to the database:', err));
   }
 }
 
