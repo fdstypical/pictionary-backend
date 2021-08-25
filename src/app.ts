@@ -56,9 +56,9 @@ export class App {
 
   private initDb(): void {
     this._db
-      .init()
-      .then(() => console.log('Connection has been established successfully.'))
-      .catch((err) => console.error('Unable to connect to the database:', err));
+      .migrate()
+      .then(() => console.log('Successfulа migration'))
+      .catch((err) => console.error('Failed migration', err));
   }
 }
 

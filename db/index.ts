@@ -24,8 +24,8 @@ export class Database {
     return this.db.authenticate();
   }
 
-  public migrate(opt?: object): void {
-    this.db.sync(opt);
+  public migrate(opt?: object): Promise<Sequelize> {
+    return this.db.sync(opt);
   }
 }
 
