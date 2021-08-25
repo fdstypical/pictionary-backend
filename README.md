@@ -19,3 +19,7 @@ To Start Server:
 To Visit App:
 
 `localhost:3000`
+
+### Start postgres db
+
+`docker run -d --name postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 5432:5432 postgres:12-alpine` \*- start postgres db localy on 5432.
