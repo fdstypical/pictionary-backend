@@ -4,7 +4,7 @@ import express, { Application } from 'express';
 import { config, Routes } from '../configs';
 
 // database
-import Database from '../db';
+import db, { Database } from '../db';
 
 // routers
 import UsersRouter from './routers/UsersRouter';
@@ -22,7 +22,7 @@ export class App {
   private constructor(
     private readonly _port: number = config.PORT,
     private readonly _prefix: string = config.API_PREFIX,
-    private readonly _db: Database = Database.Instance,
+    private readonly _db: Database = db,
   ) {
     this._app = express();
     this._server = http.createServer(this._app);

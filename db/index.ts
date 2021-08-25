@@ -1,7 +1,7 @@
 import { Sequelize, Dialect } from 'sequelize';
 import { config } from '../configs';
 
-export default class Database {
+export class Database {
   private static _instance: Database;
   private readonly dialect: Dialect = 'postgres';
   public db: Sequelize;
@@ -28,3 +28,6 @@ export default class Database {
     this.db.sync(opt);
   }
 }
+
+const db = Database.Instance;
+export default db;
