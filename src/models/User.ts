@@ -4,6 +4,8 @@ import db from '../../db';
 export interface UserAttrs {
   id: number;
   name: string;
+  email: string;
+  password: string;
 }
 
 export interface UserCreationAttrs extends Optional<UserAttrs, 'id'> {}
@@ -11,6 +13,8 @@ export interface UserCreationAttrs extends Optional<UserAttrs, 'id'> {}
 class User extends Model<UserAttrs, UserCreationAttrs> implements UserAttrs {
   public id: number;
   public name: string;
+  public email: string;
+  public password: string;
   public readonly createdAt: Date;
   public readonly updatedAt: Date;
 }
@@ -23,7 +27,15 @@ User.init(
       primaryKey: true,
     },
     name: {
-      type: new DataTypes.STRING(128),
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },
