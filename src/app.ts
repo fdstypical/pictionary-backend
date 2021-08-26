@@ -9,6 +9,7 @@ import db, { Database } from '../db';
 // routers
 import UsersRouter from './routers/UsersRouter';
 import RoomsRouter from './routers/RoomsRouter';
+import AuthRouter from './routers/AuthRouter';
 
 // web socket server
 import WebSocketServer from './ws/init';
@@ -48,6 +49,7 @@ export class App {
   private initRoutes(): void {
     this._app.use(`${this._prefix}${Routes.users}`, UsersRouter);
     this._app.use(`${this._prefix}${Routes.rooms}`, RoomsRouter);
+    this._app.use(`${this._prefix}${Routes.auth}`, AuthRouter);
   }
 
   private initWss(): void {
