@@ -6,4 +6,5 @@ export const config = {
   DB_PASSWORD: process.env.DB_PASSWORD || 'root',
   DB_PORT: Number(process.env.DB_PORT) || 5432,
   HOST: process.env.HOST || 'localhost',
+  SECRET: process.env.SECRET || 'secret_passphrase',
 };
