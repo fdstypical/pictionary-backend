@@ -43,7 +43,7 @@ class AuthController {
   }
 
   async testToken(req: Request, res: Response) {
-    const token = req.headers.authorization || null;
+    const token = req.get('Authorization') || null;
 
     if (!token) {
       res.status(400).json({ message: 'Authorization header not transferred' });
