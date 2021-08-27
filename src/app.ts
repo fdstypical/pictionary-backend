@@ -1,6 +1,8 @@
 import http from 'http';
 import express, { Application } from 'express';
+import httpContext from 'express-http-context';
 
+// configs
 import { config, Routes } from '../configs';
 
 // database
@@ -39,11 +41,14 @@ export class App {
   }
 
   public init(): void {
-    this._server.listen(this._port, () => console.log(`App listen on port: ${this._port}`));
+    this._server.listen(this._port, () =>
+      console.log(`App listen on port: ${this._port}`),
+    );
   }
 
   private initMiddlewares(): void {
     this._app.use(express.json());
+    this._app.use(httpContext.middleware);
   }
 
   private initRoutes(): void {
