@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 import User from '../models/User';
 import generateToken from '../utils/generateToken';
 
+import jwt from 'jsonwebtoken';
+
 class AuthController {
   async signup(req: Request, res: Response) {
     const { name, email, password } = req.body;
@@ -17,7 +19,7 @@ class AuthController {
     if (created) {
       res.json(user);
     } else {
-      res.json({ message: 'User with this email already exists' });
+      res.status(409).json({ message: 'User with this email already exists' });
     }
   }
 
@@ -26,19 +28,37 @@ class AuthController {
     const user = await User.findOne({ where: { email: email }, raw: true });
 
     if (!user) {
-      res.json({ message: 'Incorrect email or password' });
+      res.status(401).json({ message: 'Incorrect email or password' });
+      return;
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
-      res.json({ message: 'Incorrect email or password' });
+      res.status(401).json({ message: 'Incorrect email or password' });
+      return;
     }
 
     const token = generateToken({ id: user.id, email: user.email });
     res.json({ token });
   }
 
-  async testToken(req: Request, res: Response) {}
+  async testToken(req: Request, res: Response) {
+    const token = req.headers.authorization || null;
+
+    if (!token) {
+      res.status(400).json({ message: 'Authorization header not transferred' });
+      return;
+    }
+
+    const tokenPayload: any = jwt.decode(token);
+
+    if (!tokenPayload && !tokenPayload.id) {
+      res.status(400).json({ message: 'Invalid token' });
+    }
+
+    const user = await User.findByPk(tokenPayload.id);
+    res.json(user);
+  }
 }
 
 export default new AuthController();
