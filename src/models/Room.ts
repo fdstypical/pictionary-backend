@@ -27,7 +27,7 @@ class Room extends Model<RoomAttrs, RoomCreationAttrs> implements RoomAttrs {
   public getUsers: HasManyGetAssociationsMixin<User>;
   public addUser: HasManyAddAssociationMixin<User, number>;
   public hasUser: HasManyHasAssociationMixin<User, number>;
-  public countusers: HasManyCountAssociationsMixin;
+  public countUsers: HasManyCountAssociationsMixin;
 }
 
 Room.init(
