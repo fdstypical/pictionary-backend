@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import httpContext from 'express-http-context';
 import bcrypt from 'bcrypt';
 
-import User from '../models/User';
+import { User } from '../models';
 import generateToken from '../utils/generateToken';
 
 class AuthController {
