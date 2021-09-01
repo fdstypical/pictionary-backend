@@ -13,7 +13,6 @@ export class Database {
       host: HOST,
       port: DB_PORT,
       dialect: this.dialect,
-      query: { raw: true },
     });
   }
 

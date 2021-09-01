@@ -5,8 +5,9 @@ import {
   // HasManyGetAssociationsMixin,
   // HasManyAddAssociationMixin,
   // HasManyHasAssociationMixin,
-  HasManyCountAssociationsMixin,
+  // HasManyCountAssociationsMixin,
 } from 'sequelize';
+
 import db from '../../db';
 
 export interface RoomAttrs {
@@ -25,7 +26,7 @@ class Room extends Model<RoomAttrs, RoomCreationAttrs> implements RoomAttrs {
   // public getUsers: HasManyGetAssociationsMixin<User>;
   // public addUser: HasManyAddAssociationMixin<User, number>;
   // public hasUser: HasManyHasAssociationMixin<User, number>;
-  public countUsers: HasManyCountAssociationsMixin;
+  // public countUsers: HasManyCountAssociationsMixin;
 
   public static init() {
     return super.init.call(

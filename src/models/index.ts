@@ -7,6 +7,6 @@ Room.init();
 
 // associations
 Room.hasMany(User);
-// User.belongsTo(Room);
+User.belongsTo(Room);
 
 export { User, Room };
