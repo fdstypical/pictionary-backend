@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { User } from '../models';
+import { Room, User } from '../models';
 
 class UsersController {
   async getUsers(req: Request, res: Response) {
-    const users = await User.findAll();
+    const users = await User.findAll({ include: [{ model: Room }] });
     res.json(users);
   }
 }

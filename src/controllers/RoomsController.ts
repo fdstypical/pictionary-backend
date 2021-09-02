@@ -4,7 +4,7 @@ import { User, Room } from '../models';
 
 class RoomsController {
   async getRooms(req: Request, res: Response) {
-    const rooms = await Room.findAll({ include: { model: User } });
+    const rooms = await Room.findAll({ include: [{ model: User }] });
     res.json(rooms);
   }
 
@@ -18,7 +18,7 @@ class RoomsController {
     const roomId = req.params.id;
     const userId = req.params.userId;
 
-    const room: any = await Room.findByPk(roomId, { include: { model: User } });
+    const room = await Room.findByPk(roomId, { include: [{ model: User }] });
     if (!room) return res.status(400).json({ message: 'Room not found' });
 
     const user: any = await User.findByPk(userId);

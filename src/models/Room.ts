@@ -2,12 +2,13 @@ import {
   Model,
   DataTypes,
   Optional,
-  // HasManyGetAssociationsMixin,
-  // HasManyAddAssociationMixin,
-  // HasManyHasAssociationMixin,
-  // HasManyCountAssociationsMixin,
+  HasManyGetAssociationsMixin,
+  HasManyAddAssociationMixin,
+  HasManyHasAssociationMixin,
+  HasManyCountAssociationsMixin,
 } from 'sequelize';
 
+import { User } from './index';
 import db from '../../db';
 
 export interface RoomAttrs {
@@ -23,10 +24,10 @@ class Room extends Model<RoomAttrs, RoomCreationAttrs> implements RoomAttrs {
   public readonly createdAt: Date;
   public readonly updatedAt: Date;
 
-  // public getUsers: HasManyGetAssociationsMixin<User>;
-  // public addUser: HasManyAddAssociationMixin<User, number>;
-  // public hasUser: HasManyHasAssociationMixin<User, number>;
-  // public countUsers: HasManyCountAssociationsMixin;
+  public addUser: HasManyAddAssociationMixin<User, number>;
+  public hasUser: HasManyHasAssociationMixin<User, number>;
+  public getUsers: HasManyGetAssociationsMixin<User>;
+  public countUsers: HasManyCountAssociationsMixin;
 
   public static init() {
     return super.init.call(
