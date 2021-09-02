@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-
 import { User, Room } from '../models';
 
 class RoomsController {
@@ -18,13 +17,14 @@ class RoomsController {
     const roomId = req.params.id;
     const userId = req.params.userId;
 
-    const room = await Room.findByPk(roomId, { include: [{ model: User }] });
+    const room: any = await Room.findByPk(roomId, { include: [{ model: User }] });
     if (!room) return res.status(400).json({ message: 'Room not found' });
 
-    const user: any = await User.findByPk(userId);
+    const user = await User.findByPk(userId);
     if (!user) return res.status(400).json({ message: 'User not found' });
 
-    res.json({ room, user });
+    const updatedRoom = await room.addUser(user);
+    res.json(updatedRoom);
   }
 }
 

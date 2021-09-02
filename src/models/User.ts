@@ -2,6 +2,7 @@ import {
   Model,
   DataTypes,
   Optional,
+  Association,
   BelongsToGetAssociationMixin,
   BelongsToManyAddAssociationMixin,
 } from 'sequelize';
@@ -28,6 +29,10 @@ class User extends Model<UserAttrs, UserCreationAttrs> implements UserAttrs {
 
   public getRoom: BelongsToGetAssociationMixin<Room>;
   public setRoom: BelongsToManyAddAssociationMixin<Room, number>;
+
+  public static associations: {
+    room: Association<User, Room>;
+  };
 
   public static init() {
     return super.init.call(
