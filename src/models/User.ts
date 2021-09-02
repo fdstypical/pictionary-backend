@@ -1,4 +1,12 @@
-import { Model, DataTypes, Optional } from 'sequelize';
+import {
+  Model,
+  DataTypes,
+  Optional,
+  BelongsToGetAssociationMixin,
+  BelongsToManyAddAssociationMixin,
+} from 'sequelize';
+
+import { Room } from './index';
 import db from '../../db';
 
 export interface UserAttrs {
@@ -17,6 +25,9 @@ class User extends Model<UserAttrs, UserCreationAttrs> implements UserAttrs {
   public password: string;
   public readonly createdAt: Date;
   public readonly updatedAt: Date;
+
+  public getRoom: BelongsToGetAssociationMixin<Room>;
+  public setRoom: BelongsToManyAddAssociationMixin<Room, number>;
 
   public static init() {
     return super.init.call(
