@@ -23,7 +23,10 @@ class RoomsController {
     const user = await User.findByPk(userId);
     if (!user) return res.status(400).json({ message: 'User not found' });
 
-    const updatedRoom = await room.addUser(user);
+    const updatedRoom = await room
+      .addUser(user)
+      .then((room: Room) => room.reload({ include: [{ model: User }] }));
+
     res.json(updatedRoom);
   }
 }
