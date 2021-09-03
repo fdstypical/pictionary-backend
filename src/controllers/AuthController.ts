@@ -24,9 +24,7 @@ class AuthController {
 
   async login(req: Request, res: Response) {
     const { email, password } = req.body;
-    const user = await User.findOne({ where: { email: email } }).then((user) =>
-      user.get({ plain: true }),
-    );
+    const user = await User.findOne({ where: { email: email } });
 
     if (!user) {
       return res.status(401).json({ message: 'Incorrect email or password' });

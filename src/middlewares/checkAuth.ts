@@ -6,7 +6,7 @@ import { config } from '../../configs';
 import getToken from '../utils/getToken';
 
 export default (req: Request, res: Response, next: NextFunction) => {
-  if (req.method === 'OPTIONS') next();
+  if (req.method === 'OPTIONS') return next();
 
   const token = getToken(req);
   if (!token) {
