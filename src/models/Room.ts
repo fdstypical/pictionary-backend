@@ -3,11 +3,12 @@ import {
   DataTypes,
   Optional,
   Association,
-  HasManyGetAssociationsMixin,
+  HasManyCreateAssociationMixin,
+  HasManyRemoveAssociationMixin,
   HasManyAddAssociationMixin,
   HasManyHasAssociationMixin,
+  HasManyGetAssociationsMixin,
   HasManyCountAssociationsMixin,
-  HasManyCreateAssociationMixin,
 } from 'sequelize';
 
 import { User } from './index';
@@ -27,6 +28,7 @@ class Room extends Model<RoomAttrs, RoomCreationAttrs> implements RoomAttrs {
   public readonly updatedAt: Date;
 
   public createUser: HasManyCreateAssociationMixin<User>;
+  public removeUser: HasManyRemoveAssociationMixin<User, number>;
   public addUser: HasManyAddAssociationMixin<User, number>;
   public hasUser: HasManyHasAssociationMixin<User, number>;
   public getUsers: HasManyGetAssociationsMixin<User>;

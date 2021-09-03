@@ -34,15 +34,28 @@ class RoomsController {
     const user = await User.findByPk(userId);
     if (!user) return res.status(400).json({ message: 'User not found' });
 
-    const room: any = await Room.findByPk(roomId, { include: [{ model: User }] });
+    const room = await Room.findByPk(roomId, { include: [{ model: User }] });
     if (!room) return res.status(400).json({ message: 'Room not found' });
 
-    const updatedRoom = await room.addUser(user);
-    const reloaderRoom = await updatedRoom.reload({ include: [{ model: User }] });
-    res.json(reloaderRoom);
+    await room.addUser(user);
+    await room.reload({ include: [{ model: User }] });
+    res.json(room);
   }
 
-  async leaveRoom(req: Request, res: Response) {}
+  async leaveRoom(req: Request, res: Response) {
+    const roomId = req.params.id;
+    const { id: userId } = httpContext.get('user');
+
+    const user = await User.findByPk(userId);
+    if (!user) return res.status(400).json({ message: 'User not found' });
+
+    const room = await Room.findByPk(roomId, { include: [{ model: User }] });
+    if (!room) return res.status(400).json({ message: 'Room not found' });
+
+    await room.removeUser(user);
+    await room.reload({ include: [{ model: User }] });
+    res.json(room);
+  }
 }
 
 export default new RoomsController();
