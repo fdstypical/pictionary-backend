@@ -2,31 +2,37 @@ import { Request, Response } from 'express';
 import httpContext from 'express-http-context';
 
 import { User, Room } from '../models';
+import catchErrors from '../decorators/catchErrors';
 
 class RoomsController {
+  @catchErrors()
   async getRooms(req: Request, res: Response) {
     const rooms = await Room.findAll({ include: [{ model: User }] });
     res.json(rooms);
   }
 
+  @catchErrors()
   async getRoom(req: Request, res: Response) {
     const { id } = req.params;
     const room = await Room.findByPk(id, { include: [{ model: User }] });
     res.json(room);
   }
 
+  @catchErrors()
   async createRoom(req: Request, res: Response) {
     const { name } = req.body;
     const room = await Room.create({ name });
     res.json(room);
   }
 
+  @catchErrors()
   async deleteRoom(req: Request, res: Response) {
     const { id } = req.params;
     const code = await Room.destroy({ where: { id } });
     res.json({ code });
   }
 
+  @catchErrors()
   async addUser(req: Request, res: Response) {
     const roomId = req.params.id;
     const { id: userId } = httpContext.get('user');
@@ -42,6 +48,7 @@ class RoomsController {
     res.json(room);
   }
 
+  @catchErrors()
   async leaveRoom(req: Request, res: Response) {
     const roomId = req.params.id;
     const { id: userId } = httpContext.get('user');

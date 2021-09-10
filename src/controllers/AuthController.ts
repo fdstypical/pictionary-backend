@@ -4,8 +4,10 @@ import bcrypt from 'bcrypt';
 
 import { User } from '../models';
 import generateToken from '../utils/generateToken';
+import catchErrors from '../decorators/catchErrors';
 
 class AuthController {
+  @catchErrors()
   async signup(req: Request, res: Response) {
     const { name, email, password } = req.body;
     const hashPassword = await bcrypt.hash(password, 7);
@@ -22,6 +24,7 @@ class AuthController {
     }
   }
 
+  @catchErrors()
   async login(req: Request, res: Response) {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email: email } });
@@ -39,6 +42,7 @@ class AuthController {
     res.json({ token });
   }
 
+  @catchErrors()
   async testToken(req: Request, res: Response) {
     const userPayload = httpContext.get('user');
     const user = await User.findByPk(userPayload.id);
